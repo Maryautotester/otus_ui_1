@@ -22,7 +22,7 @@ public class UIExtensions implements BeforeEachCallback, AfterEachCallback {
     private List<Field> getFieldsByAnnotation(Class<? extends Annotation> annotation, Class<?> testClass) {
         return Arrays.stream(testClass.getFields())
                 .filter((Field field) -> field.isAnnotationPresent(annotation) && field.getType().getName()
-                            .equals(WebDriver.class.getName()))
+                        .equals(WebDriver.class.getName()))
                 .collect(Collectors.toList());
     }
     @Override

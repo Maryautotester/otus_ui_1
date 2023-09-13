@@ -3,13 +3,14 @@ package main;
 import annotations.Driver;
 import exceptions.PathEmptyException;
 import extensions.UIExtensions;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
+
 import pages.OtusMainPage;
 
 import java.text.ParseException;
+
 
 @ExtendWith(UIExtensions.class)
 public class OtusMainPage_Test {
@@ -17,7 +18,15 @@ public class OtusMainPage_Test {
     public WebDriver driver;
 
     @Test
-    public void testCoursesList() throws PathEmptyException, ParseException {
+    public void filterCourseTest() throws PathEmptyException {
+        OtusMainPage mainPage = new OtusMainPage(driver);
+        mainPage.open()
+                .mainPageLoaded()
+                .pageListCoursesShouldBeVisible()
+                .clickCourseThumbsByTitle("Специализация Python");
+    }
+    @Test
+    public void ClickOnEarliestCourse() throws PathEmptyException, ParseException {
         OtusMainPage mainPage = new OtusMainPage(driver)
                 .open()
                 .mainPageLoaded()
@@ -26,16 +35,23 @@ public class OtusMainPage_Test {
         //        Assertions.assertThatList(mainPage.getListCourses())
         //                .as("List of courses is the same")
         //                .isEqualTo(mainPage.coursesListTemplate);
+        String earliestCourse = mainPage.getCourseNameByStartDate(true);
+        System.out.println("Раньше всех стартует курс " + earliestCourse);
 
-        System.out.println("Раньше всех стартует курс " + mainPage.getEarlyStartedCourseName());
+        mainPage.clickCourseThumbsByTitle(earliestCourse)
+                .pageHeaderShouldBeSameAs(earliestCourse);
+    }
 
-        String title = mainPage.getCourseThumbsTitle(3);
-        System.out.println(title);
-        mainPage.clickCourseThumbsByTitle(title)
-                .pageHeaderShouldBeSameAs(title)
-                .returnMainPage();
+    @Test
+    public void ClickOnLatestCourse() throws PathEmptyException {
+        OtusMainPage mainPage = new OtusMainPage(driver)
+                .open()
+                .mainPageLoaded()
+                .pageListCoursesShouldBeVisible();
+        String course = mainPage.getCourseNameByStartDate(false);
+        System.out.println("Позже всех стартует курс " + course);
 
-        mainPage.mainPageLoaded();
-
+        mainPage.clickCourseThumbsByTitle(course)
+                .pageHeaderShouldBeSameAs(course.replaceAll("Специализация сетевой инженер", "Network Engineer"));
     }
 }

@@ -3,7 +3,6 @@ package factory.impl;
 import exceptions.BrowserNotSupportedException;
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.github.bonigarcia.wdm.config.Config;
-import io.github.bonigarcia.wdm.config.DriverManagerType;
 import org.openqa.selenium.WebDriver;
 
 public interface IDriver {

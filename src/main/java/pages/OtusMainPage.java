@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import annotations.Path;
 import org.openqa.selenium.By;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 
@@ -24,11 +25,13 @@ public class OtusMainPage extends AbsBasePage<OtusMainPage> {
         super(driver);
     }
 
+    private String learning = "//span[@title = 'Обучение']";
     private String courseTileSelector =
             "//main//section[.//h2[contains(text(), \"Авторские онлайн‑курсы для профессионалов\")]]";
     private String courseListSelector = "//a[contains(@href,'https://otus.ru/lessons/') and not(@class)]//div//h5"; // :is(h5)
 
     private String courseDateStart = courseListSelector + "//..//..//div//span"; // //h5//..//..//span[1]//span[1]
+
     public List<String> coursesListTemplate = Arrays.asList(
             "Системный аналитик и бизнес-аналитик",
             "Системный аналитик. Team Lead",
@@ -51,10 +54,10 @@ public class OtusMainPage extends AbsBasePage<OtusMainPage> {
 
     public ArrayList getListCourses() {
         List<WebElement> courses = $$(courseListSelector);
-        System.out.println(courses);
-        for (WebElement el:courses) {
-            System.out.println(el.getCssValue(el.getText()));
-        }
+        //        System.out.println(courses);
+        //        for (WebElement el:courses) {
+        //            System.out.println(el.getCssValue(el.getText()));
+        //        }
         ArrayList listResult = new ArrayList<String>();
         for(WebElement course: courses) {
             String courseName = course.getText();
@@ -62,11 +65,13 @@ public class OtusMainPage extends AbsBasePage<OtusMainPage> {
         }
         return listResult;
     }
+
     public OtusMainPage pageListCoursesShouldBeVisible() {
         List<WebElement> courses = $$(courseListSelector);
-        System.out.println("всего курсов "+courses.size());
+        // System.out.println("всего курсов "+courses.size());
         long actualCoursesList = courses.stream()
-                .filter((WebElement coursesList) -> waiters.waitForElementVisible(coursesList)).count();
+                .filter((WebElement coursesList) -> waiters.waitForElementVisible(coursesList))
+                .count();
         assertThat(actualCoursesList).as("number of courses not 18").isEqualTo(courses.size());
         return this;
     }
@@ -83,11 +88,13 @@ public class OtusMainPage extends AbsBasePage<OtusMainPage> {
         assertThat(course)
                 .as("Size of tiles list should be 1")
                 .hasSize(1);
+        JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
+        javascriptExecutor.executeScript("arguments[0].scrollIntoView(true);", course.get(0));
         course.get(0).click();
 
         return new CoursePage(driver);
     }
-    public String getEarlyStartedCourseName() {
+    public String getCourseNameByStartDate(boolean isEarliest) {
         List<WebElement> coursesDates = $$(courseDateStart);
 
         List<WebElement> result = new ArrayList<>(Stream.concat(coursesDates.stream()
@@ -104,7 +111,7 @@ public class OtusMainPage extends AbsBasePage<OtusMainPage> {
             try {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy");
                 LocalDate date1 = LocalDate.parse(dateCourse, formatter);
-                System.out.println(date1);
+                //System.out.println(date1);
                 dateList.add(date1);
             } catch (IllegalArgumentException ex) {
                 System.out.println(ex.getMessage());
@@ -112,14 +119,23 @@ public class OtusMainPage extends AbsBasePage<OtusMainPage> {
                 System.out.println(ex.getMessage());
             }
         }
-        LocalDate minDate = dateList.stream()
-                .reduce((a, b) -> a.isBefore(b) ? a : b)
-                .get();
-        System.out.println("min start date is " + minDate.format(DateTimeFormatter.ofPattern("d MMMM")));
-        String minCourseDate =  minDate.format(DateTimeFormatter.ofPattern("d MMMM"));
+        String selectCourseDate = null;
+        LocalDate selectDate;
+        if(isEarliest) {
+            selectDate = dateList.stream()
+                    .reduce((a, b) -> a.isBefore(b) ? a : b)
+                    .get();
+            System.out.println("min start date is " + selectDate.format(DateTimeFormatter.ofPattern("d MMMM")));
+        } else {
+            selectDate = dateList.stream()
+                    .reduce((a, b) -> a.isAfter(b) ? a : b)
+                    .get();
+            System.out.println("max start date is " + selectDate.format(DateTimeFormatter.ofPattern("d MMMM")));
+        }
+        selectCourseDate = selectDate.format(DateTimeFormatter.ofPattern("d MMMM"));
 
         List<WebElement> courses = driver.findElements(By.xpath(
-                "//span[contains(text(), \"" + minCourseDate + "\")]//..//..//h5"));
+                "//span[contains(text(), \"" + selectCourseDate + "\")]//..//..//h5"));
         return courses.get(0).getText();
 
     }

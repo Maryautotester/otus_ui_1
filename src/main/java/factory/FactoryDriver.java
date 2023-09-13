@@ -17,7 +17,12 @@ public class FactoryDriver implements IFactoryDriver {
                 return new EventFiringWebDriver(chromeWebDriver.newDriver());
             }
             default:
-                throw new BrowserNotSupportedException(BROWSER_NAME);
+                try {
+                    throw new BrowserNotSupportedException(BROWSER_NAME);
+                } catch (BrowserNotSupportedException ex) {
+                    ex.printStackTrace();
+                    return null;
+                }
 
         }
 

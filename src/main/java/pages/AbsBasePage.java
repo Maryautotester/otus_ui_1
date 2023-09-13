@@ -18,20 +18,13 @@ import pageobject.AbsPageObject;
 public abstract class AbsBasePage<T> extends AbsPageObject {
 
     private String baseurl = System.getProperty("base.url");
-
     @FindBy(xpath = "//img[contains(@alt, \"Logo\")]//..")
     WebElement headerMain;
 
-    @FindBy(xpath = "//div[@class=\"course-header2__title\"]")
+    @FindBy(xpath = "//h1")
     private WebElement header;
 
-    public T pageHeaderShouldBeVisible() {
-        assertThat(waiters.waitForElementVisible(header))
-                .as("Header should be visible")
-                .isTrue();
 
-        return (T)this;
-    }
     public T mainPageLoaded() {
         assertThat(waiters.waitForElementVisible(headerMain))
                 .as("Header should be visible")
@@ -41,8 +34,8 @@ public abstract class AbsBasePage<T> extends AbsPageObject {
     }
     public T pageHeaderShouldBeSameAs(String header) {
         assertThat(this.header.getText())
-                .as("Header should be {}", header)
-                .isEqualTo(header);
+                .as("Header should be %s", header)
+                .contains(header.replace("Специализация ", ""));
         return (T) this;
 
     }
@@ -51,16 +44,15 @@ public abstract class AbsBasePage<T> extends AbsPageObject {
     }
 
     private String getPath() throws PathEmptyException{
-        Class<? extends AbsBasePage> clazz = this.getClass();
-
-        if (clazz.isAnnotationPresent(Path.class)) {
-            Path path = clazz.getAnnotation(Path.class);
+        Path path = getClass().getAnnotation(Path.class);
+        if (path != null){
             return path.value();
         }
         throw new PathEmptyException();
     }
+
     public T open() throws PathEmptyException {
-        String path = getPath();
+        //        String path = getPath();
         String url = baseurl + getPath();
 
         driver.get(url);

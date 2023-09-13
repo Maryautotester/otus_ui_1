@@ -23,4 +23,17 @@ public class Waiters {
     public boolean waitForElementVisible(WebElement element) {
         return waitForCondition(ExpectedConditions.visibilityOf(element));
     }
+    public boolean waitForElementInvisible(WebElement element) {
+        return waitForCondition(ExpectedConditions.invisibilityOf(element));
+    }
+
+    public boolean waitForElementVisibleClick(WebElement element) {
+        try {
+            webDriverWait.until(ExpectedConditions.visibilityOf(element));
+            element.click();
+            return true;
+        } catch (Exception ex) {
+            return false;
+        }
+    }
 }
