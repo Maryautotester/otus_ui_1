@@ -25,39 +25,12 @@ public class OtusMainPage extends AbsBasePage<OtusMainPage> {
         super(driver);
     }
 
-    private String learning = "//span[@title = 'Обучение']";
-    private String courseTileSelector =
-            "//main//section[.//h2[contains(text(), \"Авторские онлайн‑курсы для профессионалов\")]]";
     private String courseListSelector = "//a[contains(@href,'https://otus.ru/lessons/') and not(@class)]//div//h5"; // :is(h5)
 
     private String courseDateStart = courseListSelector + "//..//..//div//span"; // //h5//..//..//span[1]//span[1]
 
-    public List<String> coursesListTemplate = Arrays.asList(
-            "Системный аналитик и бизнес-аналитик",
-            "Системный аналитик. Team Lead",
-            "Углубленное изучение языка Java",
-            "Специализация Machine Learning",
-            "Специализация Системный аналитик",
-            "Специализация Python",
-            "Специализация iOS Developer",
-            "Специализация Java-разработчик",
-            "Специализация QA Automation Engineer",
-            "Специализация Fullstack Developer",
-            "Специализация С++",
-            "Специализация Android",
-            "Специализация Administrator Linux",
-            "Специализация С#",
-            "Специализация сетевой инженер",
-            "C# Developer. Professional",
-            "Руководитель поддержки пользователей в IT",
-            "Symfony Framework");
-
     public ArrayList getListCourses() {
         List<WebElement> courses = $$(courseListSelector);
-        //        System.out.println(courses);
-        //        for (WebElement el:courses) {
-        //            System.out.println(el.getCssValue(el.getText()));
-        //        }
         ArrayList listResult = new ArrayList<String>();
         for(WebElement course: courses) {
             String courseName = course.getText();
@@ -68,7 +41,6 @@ public class OtusMainPage extends AbsBasePage<OtusMainPage> {
 
     public OtusMainPage pageListCoursesShouldBeVisible() {
         List<WebElement> courses = $$(courseListSelector);
-        // System.out.println("всего курсов "+courses.size());
         long actualCoursesList = courses.stream()
                 .filter((WebElement coursesList) -> waiters.waitForElementVisible(coursesList))
                 .count();
@@ -76,10 +48,6 @@ public class OtusMainPage extends AbsBasePage<OtusMainPage> {
         return this;
     }
 
-    public String getCourseThumbsTitle(int index) {
-        List<WebElement> courses = $$(courseListSelector);
-        return courses.get(--index).getText();
-    }
     public CoursePage clickCourseThumbsByTitle(String title) {
         List<WebElement> tiles = $$(courseListSelector);
         List<WebElement> course = tiles.stream()
@@ -105,13 +73,12 @@ public class OtusMainPage extends AbsBasePage<OtusMainPage> {
         ArrayList<LocalDate> dateList = new ArrayList<>();
 
         for (WebElement element : result) {
-            ArrayList<String> date = new ArrayList<String>(Arrays.asList(element.getText().substring(2).split(" ")));
+            ArrayList<String> date = new ArrayList<>(Arrays.asList(element.getText().substring(2).split(" ")));
             String dateCourse = date.get(0) + " " + date.get(1) + " 2023";
 
             try {
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d MMMM yyyy");
                 LocalDate date1 = LocalDate.parse(dateCourse, formatter);
-                //System.out.println(date1);
                 dateList.add(date1);
             } catch (IllegalArgumentException ex) {
                 System.out.println(ex.getMessage());
@@ -119,7 +86,7 @@ public class OtusMainPage extends AbsBasePage<OtusMainPage> {
                 System.out.println(ex.getMessage());
             }
         }
-        String selectCourseDate = null;
+        String selectCourseDate;
         LocalDate selectDate;
         if(isEarliest) {
             selectDate = dateList.stream()

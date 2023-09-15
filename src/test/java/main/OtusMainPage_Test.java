@@ -9,9 +9,6 @@ import org.openqa.selenium.WebDriver;
 
 import pages.OtusMainPage;
 
-import java.text.ParseException;
-
-
 @ExtendWith(UIExtensions.class)
 public class OtusMainPage_Test {
     @Driver
@@ -26,15 +23,12 @@ public class OtusMainPage_Test {
                 .clickCourseThumbsByTitle("Специализация Python");
     }
     @Test
-    public void ClickOnEarliestCourse() throws PathEmptyException, ParseException {
+    public void clickOnEarliestCourse() throws PathEmptyException {
         OtusMainPage mainPage = new OtusMainPage(driver)
                 .open()
                 .mainPageLoaded()
                 .pageListCoursesShouldBeVisible();
         System.out.println(mainPage.getListCourses());
-        //        Assertions.assertThatList(mainPage.getListCourses())
-        //                .as("List of courses is the same")
-        //                .isEqualTo(mainPage.coursesListTemplate);
         String earliestCourse = mainPage.getCourseNameByStartDate(true);
         System.out.println("Раньше всех стартует курс " + earliestCourse);
 
@@ -43,7 +37,7 @@ public class OtusMainPage_Test {
     }
 
     @Test
-    public void ClickOnLatestCourse() throws PathEmptyException {
+    public void clickOnLatestCourse() throws PathEmptyException {
         OtusMainPage mainPage = new OtusMainPage(driver)
                 .open()
                 .mainPageLoaded()
