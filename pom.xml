@@ -22,9 +22,11 @@
         <browser>chrome</browser>
         <!--<base.url/>-->
         <base.url>https://otus.ru</base.url>
+        <webdriver.remote.url>http://127.0.0.1:4444/wd/hub</webdriver.remote.url>
+        <browser.version>114.0</browser.version>
 
-        <maven.compiler.source>19</maven.compiler.source>
-        <maven.compiler.target>19</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
     <dependencies>
