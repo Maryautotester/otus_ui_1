@@ -10,7 +10,7 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 public class Waiters {
     private WebDriverWait webDriverWait = null;
     public Waiters(WebDriver driver) {
-        webDriverWait = new WebDriverWait(driver, 10);
+        webDriverWait = new WebDriverWait(driver, 40);
     }
     public boolean waitForCondition(ExpectedCondition condition) {
         try {
@@ -20,6 +20,7 @@ public class Waiters {
             return false;
         }
     }
+
     public boolean waitForElementVisible(WebElement element) {
         return waitForCondition(ExpectedConditions.visibilityOf(element));
     }

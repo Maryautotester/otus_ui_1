@@ -3,6 +3,7 @@ package main;
 import annotations.Driver;
 import exceptions.PathEmptyException;
 import extensions.UIExtensions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.openqa.selenium.WebDriver;
@@ -15,6 +16,7 @@ public class OtusMainPage_Test {
     public WebDriver driver;
 
     @Test
+    @DisplayName("Выбор курса по имени - Специализация Python")
     public void filterCourseTest() throws PathEmptyException {
         OtusMainPage mainPage = new OtusMainPage(driver);
         mainPage.open()
@@ -23,6 +25,7 @@ public class OtusMainPage_Test {
                 .clickCourseThumbsByTitle("Специализация Python");
     }
     @Test
+    @DisplayName("Выбор самого раннего курса")
     public void clickOnEarliestCourse() throws PathEmptyException {
         OtusMainPage mainPage = new OtusMainPage(driver)
                 .open()
@@ -37,6 +40,7 @@ public class OtusMainPage_Test {
     }
 
     @Test
+    @DisplayName("Выбор самого позднего курса")
     public void clickOnLatestCourse() throws PathEmptyException {
         OtusMainPage mainPage = new OtusMainPage(driver)
                 .open()

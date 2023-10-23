@@ -3,6 +3,7 @@ package pages;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import annotations.Path;
+import io.qameta.allure.Step;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -29,6 +30,7 @@ public class OtusMainPage extends AbsBasePage<OtusMainPage> {
 
     private String courseDateStart = courseListSelector + "//..//..//div//span"; // //h5//..//..//span[1]//span[1]
 
+    @Step("Получение списка курсов")
     public ArrayList getListCourses() {
         List<WebElement> courses = $$(courseListSelector);
         ArrayList listResult = new ArrayList<String>();
@@ -39,6 +41,7 @@ public class OtusMainPage extends AbsBasePage<OtusMainPage> {
         return listResult;
     }
 
+    @Step("Страница выбора курсов загружена")
     public OtusMainPage pageListCoursesShouldBeVisible() {
         List<WebElement> courses = $$(courseListSelector);
         long actualCoursesList = courses.stream()
@@ -47,7 +50,7 @@ public class OtusMainPage extends AbsBasePage<OtusMainPage> {
         assertThat(actualCoursesList).as("number of courses not 18").isEqualTo(courses.size());
         return this;
     }
-
+    @Step("Кликнуть по плитке курса по названию")
     public CoursePage clickCourseThumbsByTitle(String title) {
         List<WebElement> tiles = $$(courseListSelector);
         List<WebElement> course = tiles.stream()
@@ -62,6 +65,7 @@ public class OtusMainPage extends AbsBasePage<OtusMainPage> {
 
         return new CoursePage(driver);
     }
+    @Step("Получение названия курса по дате")
     public String getCourseNameByStartDate(boolean isEarliest) {
         List<WebElement> coursesDates = $$(courseDateStart);
 
