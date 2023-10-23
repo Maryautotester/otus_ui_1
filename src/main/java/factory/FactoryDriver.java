@@ -19,8 +19,10 @@ public class FactoryDriver implements IFactoryDriver {
                 ChromeWebDriver chromeWebDriver = new ChromeWebDriver();
                 if(REMOTE_URL == null) {
                     chromeWebDriver.downloadLocalWebDriver(BROWSER_NAME);
+                } else {
+                    WebDriverManager.chromeWebDriver().setup();
                 }
-                WebDriverManager.getInstance(BROWSER_NAME).setup();
+                
                 return new EventFiringWebDriver(chromeWebDriver.newDriver());
             }
             default:
