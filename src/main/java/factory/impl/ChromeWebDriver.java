@@ -29,6 +29,11 @@ public class ChromeWebDriver implements IDriver {
         logPrefs.enable(LogType.PERFORMANCE, Level.INFO);
         chromeOptions.setCapability(CapabilityType.LOGGING_PREFS, logPrefs);
 
-        return new ChromeDriver(chromeOptions);
-    }
+        URL remoteURL = getRemoteUrl();
+        if (remoteURL == null) {
+              return new ChromeDriver(options);
+            } else {
+        return new RemoteWebDriver(getRemoteUrl(), options);
+        }
+      }
 }
