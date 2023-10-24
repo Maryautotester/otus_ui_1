@@ -25,7 +25,9 @@
         <browser>chrome</browser>
         <!--<base.url/>-->
         <base.url>https://otus.ru</base.url>
-
+        <webdriver.remote.url>http://127.0.0.1/wd/hub</webdriver.remote.url>
+        <browser.version>115.0</browser.version>
+        <enableVNC>true</enableVNC>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
@@ -100,9 +102,9 @@
                         <base.url>${base.url}</base.url>
                         <name>junit.jupiter.extensions.autodetection.enabled</name>
                         <value>true</value>
-                        <webdriver.remote.url>http://127.0.0.1/wd/hub</webdriver.remote.url>
-                        <browser.version>115.0</browser.version>
-                        <enableVNC>true</enableVNC>
+                        <webdriver.remote.url>${webdriver.remote.url}</webdriver.remote.url>
+                        <browser.version>${browser.version}</browser.version>
+                        <enableVNC>${enableVNC}</enableVNC>
                     </systemPropertyVariables>
                 </configuration>
                 <dependencies>
