@@ -10,20 +10,24 @@ import org.openqa.selenium.WebDriver;
 import pages.OtusMainPage;
 
 @ExtendWith(UIExtensions.class)
-public class OtusMainPage_Test {
+public class FindEarliestCourse_Test {
     @Driver
     public WebDriver driver;
+
+
     @Test
-    @DisplayName("Выбор самого позднего курса")
-    public void clickOnLatestCourse() throws PathEmptyException {
+    @DisplayName("Выбор самого раннего курса")
+    public void clickOnEarliestCourse() throws PathEmptyException {
         OtusMainPage mainPage = new OtusMainPage(driver)
                 .open()
                 .mainPageLoaded()
                 .pageListCoursesShouldBeVisible();
-        String course = mainPage.getCourseNameByStartDate(false);
-        System.out.println("Позже всех стартует курс " + course);
+        System.out.println(mainPage.getListCourses());
+        String earliestCourse = mainPage.getCourseNameByStartDate(true);
+        System.out.println("Раньше всех стартует курс " + earliestCourse);
 
-        mainPage.clickCourseThumbsByTitle(course)
-                .pageHeaderShouldBeSameAs(course.replaceAll("Специализация сетевой инженер", "Network Engineer"));
+        mainPage.clickCourseThumbsByTitle(earliestCourse)
+                .pageHeaderShouldBeSameAs(earliestCourse);
     }
+
 }
