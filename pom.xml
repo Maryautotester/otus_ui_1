@@ -97,16 +97,8 @@
                     <argLine>
                         -javaagent:"${settings.localRepository}/org/aspectj/aspectjweaver/${aspectj.version}/aspectjweaver-${aspectj.version}.jar"
                     </argLine>
-                    <parallelTestsTimeoutInSeconds>5</parallelTestsTimeoutInSeconds>
-                    <properties>
-                        <configurationParameters>
-                            junit.jupiter.execution.parallel.enabled = true
-                            junit.jupiter.execution.parallel.mode.default = concurrent
-                            junit.jupiter.execution.parallel.mode.classes.default = concurrent
-<!--                            junit.jupiter.execution.parallel.config.strategy = fixed-->
-<!--                            junit.jupiter.execution.parallel.config.fixed.parallelism = 3-->
-                        </configurationParameters>
-                    </properties>
+                    <parallel>method</parallel>
+                    <forkCount>3</forkCount>
                     <systemPropertyVariables>
                         <browser>${browser}</browser>
                         <base.url>${base.url}</base.url>
