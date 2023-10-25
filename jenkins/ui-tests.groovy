@@ -7,7 +7,7 @@ timeout(30) {
             stage('Run tests') {
                 tests_exit_code = sh(
                         script: """
-                mvn -Dparallel=classes -DforkCount=3 -DuseUnlimitedThreads=true -Dbrowser=$BROWSER -Dbrowserversion=$BROWSER_VERSION -Dwebdriver.base.url=$BASE_URL -Dwebdriver.remote.url=$SELENOID_URL -Djunit.jupiter.execution.parallel.enabled=true -Djunit.jupiter.execution.parallel.mode.default=concurrent -Djunit.jupiter.execution.parallel.mode.classes.default=concurrent test
+                mvn -Dbrowser=$BROWSER -Dbrowserversion=$BROWSER_VERSION -Dwebdriver.base.url=$BASE_URL -Dwebdriver.remote.url=$SELENOID_URL -Djunit.jupiter.execution.parallel.enabled=true -Djunit.jupiter.execution.parallel.mode.default=concurrent -Djunit.jupiter.execution.parallel.mode.classes.default=concurrent test
                 """,
                         returnStatus: true
                 )
